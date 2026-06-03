@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    /* =======================================
+       1. 现代打包器适配 (专为 Vite / esbuild 设计)
+       ======================================= */
+    "target": "ESNext",           // 放弃 TS 的降级编译，将最新语法原封不动交给 Vite/Babel 处理
+    "module": "ESNext",           // 使用原生 ESM 模块系统
+    "moduleResolution": "bundler",// 🌟 核心：TS 5.0 新增。完美适配 Vite，支持 exports 字段和纯 ESM 包解析
+    "isolatedModules": true,      // 🌟 核心：强制单文件编译模式。因为 esbuild 编译时没有完整类型上下文，开启此项能避免写出 esbuild 无法编译的危险代码（如隐式类型导出）
+    "resolveJsonModule": true,    // 允许 import package.json 等 JSON 文件
+    "esModuleInterop": true,      // 允许 default import 那些没有默认导出的 CommonJS 库
+    "jsx": "preserve",            // 把 JSX 原封不动交给 Vite (Vue 的 jsx 插件或 React 插件) 去编译
+
+    /* =======================================
+       2. 极致的类型安全 (企业级代码质量底线)
+       ======================================= */
+    "strict": true,               // 开启所有严格检查（包括 strictNullChecks, noImplicitAny 等）
+    "noUnusedLocals": true,       // 禁止定义了却未使用的局部变量
+    "noUnusedParameters": true,   // 禁止未使用的函数参数
+    "noFallthroughCasesInSwitch": true, // Switch 语句必须有 break/return，防止 case 穿透漏测
+    "exactOptionalPropertyTypes": true, // 🌟 进阶：严格区分 obj.prop = undefined 和 属性本身不存在，避免幽灵 BUG
+    "noUncheckedIndexedAccess": true,   // 🌟 进阶：数组/字典取值时强制推断为 T | undefined，逼迫开发者写非空判断
+
+    "rootDir": "./src",     //显式指定源码根目录
+    "declaration": true,    //显式指定声明文件输出到 dist
+    "declarationDir": "./dist",  //严格限制只检查 src 目录
+
+    /* =======================================
+       3. 性能与工程化体验 (拯救 CI 时间)
+       ======================================= */
+    "skipLibCheck": true,         // 🌟 核心：跳过 node_modules 里的所有 .d.ts 检查。极大提升编译速度，并防止第三方库内部的类型冲突导致 CI 挂掉
+    "forceConsistentCasingInFileNames": true, // 强制文件名大小写一致（MacOS 默认不敏感，Linux 敏感，开启此项防止本地好好的，上 CI 报错）
+
+    /* =======================================
+       4. 运行环境支持
+       ======================================= */
+    "lib": ["DOM", "DOM.Iterable", "ESNext"] // 告诉 TS 我们的代码跑在现代浏览器里，支持最新的 ES API 和 DOM API
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}
