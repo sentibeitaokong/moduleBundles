@@ -1,0 +1,4 @@
+packages:
+  - 'bundle-demos/*'
+allowBuilds:
+  esbuild: false
